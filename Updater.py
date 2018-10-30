@@ -589,7 +589,7 @@ class SpectateMotor:
         await self.do_restart(ctx, reason)
        
     @commands.command()
-    async def help(ctx, *, command: str = None):
+    async def help(self, ctx, *, command: str = None):
         """Shows help about a command or the bot"""
         try:
             if command is None:
