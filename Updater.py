@@ -94,7 +94,11 @@ class SpectateMotor:
         if self.update_task is None:
             await ctx.send('Not spectating...')
         else:
-            await self.interrupt_spectating()
+            try:
+                await self.interrupt_spectating()
+                self.interrupt_variables()
+            except:
+                pass
             await ctx.send('Stopped spectating...')
 
     @commands.command(aliases=['newgame'])
