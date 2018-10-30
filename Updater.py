@@ -127,7 +127,7 @@ class Updater(commands.AutoShardedBot):
 
     async def on_ready(self):
         await self.wait_until_ready()
-        await self.change_presence(status=discord.Status.dnd, ctivity=discord.Activity(type=discord.ActivityType.watching, name="epic Bot Battles"))
+        await self.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.watching, name="epic Bot Battles"))
         print("Ready to serve League of Bots!")
 
 if __name__ == "__main__":
