@@ -78,7 +78,7 @@ class SpectateMotor:
             hp = '\n'.join([f"{bot['name']}: {bot['hp']} HP" for bot in self.bots])
             await self.map.edit(content=f'```fix\n{out}\n\n{hp}\n\nGeneration {self.turns}```')
 
-    @commands.command()
+    @commands.command(aliases=['s', 'st', 'sp', 'spect'])
     async def spectate(self, ctx):
         """Spectate The Game in LIVE Mode"""
         _ = await ctx.send('Trying to connect... Check <#505815417269518346>')
@@ -88,7 +88,7 @@ class SpectateMotor:
         else:
             await _.edit(content='Already spectating... Check <#505815417269518346>')
 
-    @commands.command()
+    @commands.command(aliases=['stahp'])
     async def stop(self, ctx):
         """Stop Spectating The Game"""
         if self.update_task is None:
@@ -101,7 +101,7 @@ class SpectateMotor:
                 pass
             await ctx.send('Stopped spectating...')
 
-    @commands.command(aliases=['newgame'])
+    @commands.command(aliases=['newgame', 'ng'])
     async def new(self, ctx):
         """Starts a New Game"""
         async with self.session.get("https://league.travitia.xyz/new") as req:
