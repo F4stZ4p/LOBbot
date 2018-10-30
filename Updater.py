@@ -7,8 +7,6 @@ import os, sys
 import itertools
 import inspect
 import re
-import asyncio
-import discord
 import random
 
 class CannotPaginate(Exception):
@@ -397,7 +395,7 @@ class HelpPaginator(Pages):
         self.embed.title = self.title
 
         if hasattr(self, '_is_bot'):
-            value ='For more help, join the official bot support server: **[Click me!](https://pornhub.com)**'
+            value ='Join official **League of Bots** server **[Right Here](https://discord.io/leagueofbots)**!'
             self.embed.add_field(name='Support', value=value, inline=False)
 
         self.embed.set_footer(text=f'Use "{self.prefix}help command" for more info on a command.')
