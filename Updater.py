@@ -13,7 +13,7 @@ class CannotPaginate(Exception):
     pass
 
 class Pages:
-    def __init__(self, ctx, *, entries, per_page=3, show_entry_count=True):
+    def __init__(self, ctx, *, entries, per_page=5, show_entry_count=True):
         self.bot = ctx.bot
         self.entries = entries
         self.message = ctx.message
@@ -489,27 +489,6 @@ class SpectateMotor:
         self.update_task.cancel()
         self.update_task = None
 
-    async def do_restart(self, ctx, reason):
-        counter = await ctx.send(f':warning: | **Initialized restart due to {reason}**')
-        try:
-            await self.interrupt_spectating()
-            self.interrupt_variables()
-        except:
-            pass
-        async for m in self.bot.get_channel(505815417269518346).history(limit=1000):
-            try:
-                if m.id != counter.id:
-                    await m.delete()
-            except:
-                continue
-        await asyncio.sleep(1)
-        for count in range(5):
-            await counter.edit(content=f':warning: | **Restarting in {abs(count - 5)}s**')
-            await asyncio.sleep(1)
-
-        await counter.delete()
-        os.execl(sys.executable, sys.executable, *sys.argv)
-
     def update_turns(self):
         self.turns += 1
 
@@ -578,7 +557,32 @@ class SpectateMotor:
                 await ctx.send("Game already running... you can't start new...")
             else:
                 await ctx.send("New game successfully created...")
+        
+class Commands:
+    def __init__(self):
+        self.bot = bot
+        
+    async def do_restart(self, ctx, reason):
+        counter = await ctx.send(f':warning: | **Initialized restart due to {reason}**')
+        try:
+            await self.interrupt_spectating()
+            self.interrupt_variables()
+        except:
+            pass
+        async for m in self.bot.get_channel(505815417269518346).history(limit=1000):
+            try:
+                if m.id != counter.id:
+                    await m.delete()
+            except:
+                continue
+        await asyncio.sleep(1)
+        for count in range(5):
+            await counter.edit(content=f':warning: | **Restarting in {abs(count - 5)}s**')
+            await asyncio.sleep(1)
 
+        await counter.delete()
+        os.execl(sys.executable, sys.executable, *sys.argv)
+        
     @commands.is_owner()
     @commands.command(hidden=True)
     async def restart(self, ctx, reason: str = "some reason"):
