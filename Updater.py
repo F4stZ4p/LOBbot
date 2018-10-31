@@ -13,7 +13,7 @@ class CannotPaginate(Exception):
     pass
 
 class Pages:
-    def __init__(self, ctx, *, entries, per_page=5, show_entry_count=True):
+    def __init__(self, ctx, *, entries, per_page=3, show_entry_count=True):
         self.bot = ctx.bot
         self.entries = entries
         self.message = ctx.message
@@ -574,8 +574,7 @@ class SpectateMotor:
     async def new(self, ctx):
         """Starts a New Game"""
         async with self.session.get("https://league.travitia.xyz/new") as req:
-            req = await req.json()
-            if req["status"] == "error":
+            if (await req.json())["status"] == "error":
                 await ctx.send("Game already running... you can't start new...")
             else:
                 await ctx.send("New game successfully created...")
