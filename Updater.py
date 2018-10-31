@@ -579,7 +579,7 @@ class SpectateMotor:
             else:
                 await ctx.send("New game successfully created...")
         
-class Commands:
+class Community:
     def __init__(self, bot):
         self.bot = bot
        
@@ -609,6 +609,26 @@ class Commands:
             await p.paginate()
         except Exception as e:
             await ctx.send(e)
+            
+    @commands.command()
+    async def source(self, ctx, *, command: str = None):
+        """Displays the Bot's source"""
+
+        if command is None:
+            return await ctx.send('<https://github.com/F4stZ4p/LOBbot>')
+
+        object = self.bot.get_command(command.replace('.', ' '))
+        if object is None:
+            return await ctx.send('Command not found')
+
+        src = object.callback.__code__
+        lines, firstlineno = inspect.getsourcelines(src)
+        if not object.callback.__module__.startswith('discord'):
+            location = os.path.relpath(src.co_filename).replace('\\', '/')
+        else:
+            location = object.callback.__module__.replace('.', '/') + '.py'
+
+        await ctx.send(f'<{https://github.com/F4stZ4p/LOBbot}/blob/master/{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}>')
 
 class Updater(commands.AutoShardedBot):
     def __init__(self):
@@ -617,7 +637,7 @@ class Updater(commands.AutoShardedBot):
     def run(self):
         self.remove_command('help')
         self.add_cog(SpectateMotor(self))
-        self.add_cog(Commands(self))
+        self.add_cog(Community(self))
         super().run(os.getenv("TOKEN"))
 
     async def on_ready(self):
