@@ -496,6 +496,27 @@ class SpectateMotor:
         self.bots = []
         self.turns = 0
         self.latest = {}
+        
+    async def do_restart(self, ctx, reason):
+        counter = await ctx.send(f':warning: | **Initialized restart due to {reason}**')
+        try:
+            await self.interrupt_spectating()
+            self.interrupt_variables()
+        except:
+            pass
+        async for m in self.bot.get_channel(505815417269518346).history(limit=1000):
+            try:
+                if m.id != counter.id:
+                    await m.delete()
+            except:
+                continue
+        await asyncio.sleep(1)
+        for count in range(5):
+            await counter.edit(content=f':warning: | **Restarting in {abs(count - 5)}s**')
+            await asyncio.sleep(1)
+
+        await counter.delete()
+        os.execl(sys.executable, sys.executable, *sys.argv)
 
     async def updater(self, channel):
         await self.bot.wait_until_ready()
@@ -561,33 +582,12 @@ class SpectateMotor:
 class Commands:
     def __init__(self):
         self.bot = bot
-        
-    async def do_restart(self, ctx, reason):
-        counter = await ctx.send(f':warning: | **Initialized restart due to {reason}**')
-        try:
-            await self.interrupt_spectating()
-            self.interrupt_variables()
-        except:
-            pass
-        async for m in self.bot.get_channel(505815417269518346).history(limit=1000):
-            try:
-                if m.id != counter.id:
-                    await m.delete()
-            except:
-                continue
-        await asyncio.sleep(1)
-        for count in range(5):
-            await counter.edit(content=f':warning: | **Restarting in {abs(count - 5)}s**')
-            await asyncio.sleep(1)
-
-        await counter.delete()
-        os.execl(sys.executable, sys.executable, *sys.argv)
-        
+       
     @commands.is_owner()
     @commands.command(hidden=True)
     async def restart(self, ctx, reason: str = "some reason"):
         """Restarts The Bot"""
-        await self.do_restart(ctx, reason)
+        await self.bot.cogs['SpectateMotor'].do_restart(ctx, reason)
        
     @commands.command()
     async def help(self, ctx, *, command: str = None):
@@ -617,6 +617,7 @@ class Updater(commands.AutoShardedBot):
     def run(self):
         self.remove_command('help')
         self.add_cog(SpectateMotor(self))
+        self.add_cog(Commands(self))
         super().run(os.getenv("TOKEN"))
 
     async def on_ready(self):
