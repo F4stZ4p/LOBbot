@@ -628,7 +628,7 @@ class Community:
         else:
             location = object.callback.__module__.replace('.', '/') + '.py'
 
-        await ctx.send(f'Licensed under the MIT License\n<https://github.com/F4stZ4p/LOBbot}/blob/master/{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}>')
+        await ctx.send(f'Licensed under the MIT License\n<https://github.com/F4stZ4p/LOBbot/blob/master/{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}>')
 
 class Updater(commands.AutoShardedBot):
     def __init__(self):
