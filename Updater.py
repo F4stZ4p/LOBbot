@@ -580,7 +580,7 @@ class SpectateMotor:
                 await ctx.send("New game successfully created...")
         
 class Commands:
-    def __init__(self):
+    def __init__(self, bot):
         self.bot = bot
        
     @commands.is_owner()
